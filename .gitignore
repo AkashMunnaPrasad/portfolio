@@ -1,10 +1,5 @@
 node_modules/
 dist/
 .env
-
-# Large assets
-*.png
-*.jpeg
-*.jpg
 backend/uploads/
 frontend/dist/
