@@ -8,21 +8,26 @@ const adminCredentials = {
 };
 
 async function login(req, res) {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res.status(400).json({ success: false, message: 'Username and password required.' });
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(400).json({ success: false, message: 'Username and password required.' });
+    }
+    if (username !== adminCredentials.username) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials.' });
+    }
+    const match = bcrypt.compareSync(password, adminCredentials.passwordHash);
+    if (!match) {
+      return res.status(401).json({ success: false, message: 'Invalid credentials.' });
+    }
+    const token = jwt.sign({ username, role: 'admin' }, ENV.JWT_SECRET, {
+      expiresIn: ENV.JWT_EXPIRES_IN,
+    });
+    res.json({ success: true, token, expiresIn: 28800, username });
+  } catch (err) {
+    console.error('[LOGIN ERROR]', err.message, err.stack);
+    res.status(500).json({ success: false, message: 'Internal server error.', error: err.message });
   }
-  if (username !== adminCredentials.username) {
-    return res.status(401).json({ success: false, message: 'Invalid credentials.' });
-  }
-  const match = bcrypt.compareSync(password, adminCredentials.passwordHash);
-  if (!match) {
-    return res.status(401).json({ success: false, message: 'Invalid credentials.' });
-  }
-  const token = jwt.sign({ username, role: 'admin' }, ENV.JWT_SECRET, {
-    expiresIn: ENV.JWT_EXPIRES_IN,
-  });
-  res.json({ success: true, token, expiresIn: 28800, username });
 }
 
 async function changePassword(req, res) {
