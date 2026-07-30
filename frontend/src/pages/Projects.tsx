@@ -21,7 +21,7 @@ export default function Projects() {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   const limit = 12;
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const categories = [
     'all',

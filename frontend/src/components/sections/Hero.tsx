@@ -25,7 +25,7 @@ export default function Hero() {
     function type() {
       const current = roles[indexRef.current];
       if (!deletingRef.current) {
-        el.textContent = current.slice(0, charIndexRef.current + 1);
+        if (el) el.textContent = current.slice(0, charIndexRef.current + 1);
         charIndexRef.current++;
         if (charIndexRef.current === current.length) {
           deletingRef.current = true;
@@ -34,7 +34,7 @@ export default function Hero() {
         }
         timer = setTimeout(type, 80);
       } else {
-        el.textContent = current.slice(0, charIndexRef.current - 1);
+        if (el) el.textContent = current.slice(0, charIndexRef.current - 1);
         charIndexRef.current--;
         if (charIndexRef.current === 0) {
           deletingRef.current = false;

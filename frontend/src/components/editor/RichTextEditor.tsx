@@ -41,7 +41,6 @@ export default function RichTextEditor({ value, onChange, placeholder = 'Write y
   const [tableCols, setTableCols] = useState(3);
   const fileRef = useRef<HTMLInputElement>(null);
   const videoFileRef = useRef<HTMLInputElement>(null);
-  const imageUploadRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
     extensions: [
