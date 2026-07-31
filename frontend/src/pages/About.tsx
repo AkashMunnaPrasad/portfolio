@@ -45,7 +45,7 @@ export default function About() {
         <div className="relative z-10 text-center">
           <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
             className="font-['Space_Grotesk'] text-[clamp(2.6rem,7vw,5rem)] font-black tracking-[0.1em] uppercase">
-            ABOUT <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">US</span>
+            ABOUT <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">ME</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
             className="text-sm text-[var(--text-secondary)] tracking-widest uppercase mt-4 font-medium">

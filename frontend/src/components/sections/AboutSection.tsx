@@ -25,7 +25,7 @@ export default function AboutSection() {
           transition={{ duration: 0.7 }}
         >
           <h1 className="font-['Space_Grotesk'] text-[clamp(2rem,4vw,3rem)] font-black tracking-widest uppercase mb-1">
-            ABOUT <span className="text-[var(--accent-cyan)]">US</span>
+            ABOUT <span className="text-[var(--accent-cyan)]">ME</span>
           </h1>
           <p className="text-xs tracking-[0.2em] uppercase text-[var(--accent-violet)] mb-5">ECE Engineer · VLSI Aspirant</p>
           <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-7">
