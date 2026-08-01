@@ -73,13 +73,19 @@ export default function About() {
               Electronics & Communication <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">Engineer</span>
             </h2>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
-              I am Akash Munna Prasad, a B.Tech student in Electronics & Communication Engineering with a strong passion for VLSI design and semiconductor technologies. I am deeply interested in RTL design, digital circuits, and chip architecture.
+              I am Akash Munna Prasad, a 4th-year B.Tech student in Electronics and Communication Engineering (ECE) with a strong passion for VLSI Design and semiconductor technology. My technical expertise includes Digital Electronics, CMOS VLSI Design, RTL-to-GDSII Design Flow, Verilog HDL, FPGA Design, and Digital Circuit Design. I am committed to building efficient digital systems and continuously expanding my knowledge in modern chip design methodologies.
             </p>
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
-              Alongside my core ECE focus, I have built practical skills in web development — crafting performant, visually polished interfaces. My goal is to contribute to India's growing semiconductor ecosystem as a VLSI engineer while continuously expanding my technical toolbox.
+              To strengthen my practical skills, I successfully completed a 2-month research-based internship at NIT Delhi, where I gained hands-on experience in VLSI design and digital hardware development. I also completed a 2-month online VLSI internship through Internshala, powered by IITM Pravartak, focusing on Verilog, FPGA implementation, and digital system design. Additionally, I completed a 1-month Embedded Systems internship at ESTC Ramnagar (MSME), where I worked on embedded hardware and microcontroller-based applications.
+            </p>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
+              Along with these internships, I have earned NPTEL certifications in CMOS Digital VLSI Design and Digital Design with Verilog, which have strengthened my understanding of semiconductor devices, CMOS circuits, HDL-based design, and digital system implementation.
+            </p>
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-5">
+              I am passionate about pursuing a career in the semiconductor industry and aspire to contribute to the design and development of high-performance, low-power integrated circuits as a VLSI Design Engineer. I enjoy learning new technologies, solving engineering challenges, and continuously improving my technical expertise through practical projects, research, and industry-oriented training.
             </p>
             <div className="flex flex-wrap gap-3 my-6">
-              {['B.Tech ECE', 'VLSI Design', 'RTL / Verilog', 'Web Dev'].map((b) => (
+              {['B.Tech ECE', 'CMOS VLSI', 'RTL / Verilog', 'FPGA'].map((b) => (
                 <span key={b} className="px-4 py-1.5 rounded-full border border-[var(--border)] text-xs font-medium tracking-wider uppercase text-[var(--accent-cyan)] bg-[var(--accent-glow)]">
                   {b}
                 </span>
