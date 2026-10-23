@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+
+Sitemap: https://portfolio-omega-ochre-71.vercel.app/sitemap.xml

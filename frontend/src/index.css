@@ -39,6 +39,11 @@
   --shadow-card: 0 8px 48px rgba(0, 0, 0, 0.1);
 }
 
+/* Signature is white on dark; invert it back to black in light mode. */
+.light .signature-logo {
+  filter: brightness(0);
+}
+
 /* ── Base styles ── */
 html {
   scroll-behavior: smooth;
@@ -506,4 +511,50 @@ body {
 /* ── Image lightbox backdrop ── */
 .lightbox-open {
   overflow: hidden;
+}
+
+/* ── Print / Save as PDF ── */
+@media print {
+  :root,
+  .light {
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
+    --bg-card: #ffffff;
+    --bg-glass: #ffffff;
+    --accent-cyan: #0369a1;
+    --accent-violet: #5b21b6;
+    --accent-glow: transparent;
+    --text-primary: #111827;
+    --text-secondary: #374151;
+    --text-muted: #4b5563;
+    --border: #d1d5db;
+    --border-hover: #9ca3af;
+    --shadow-glow: none;
+    --shadow-card: none;
+  }
+
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  main {
+    padding-top: 0 !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+  }
+
+  section {
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
 }

@@ -43,6 +43,8 @@ export default function AdminLogin() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Username"
+          aria-label="Username"
+          autoComplete="username"
           required
           className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-4 transition-all focus:border-[var(--accent-cyan)]"
         />
@@ -51,6 +53,8 @@ export default function AdminLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          aria-label="Password"
+          autoComplete="current-password"
           required
           className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-6 transition-all focus:border-[var(--accent-cyan)]"
         />

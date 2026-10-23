@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import profileImg from '../assets/profile.png';
+import { Link } from 'react-router-dom';
+import profileImg from '../assets/profile.webp';
 
 const timeline = [
   {
@@ -58,7 +59,7 @@ export default function About() {
         <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-20 items-center">
           <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}
             className="relative w-[360px] mx-auto">
-            <img src={profileImg} alt="Akash Munna Prasad" className="w-full object-cover rounded-[var(--radius-xl)]" />
+            <img src={profileImg} alt="Akash Munna Prasad" width={360} height={360} loading="lazy" decoding="async" className="w-full object-cover rounded-[var(--radius-xl)]" />
             <div className="absolute bottom-[-22px] left-1/2 -translate-x-1/2 bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-md)] px-5 py-3 flex items-center gap-3 shadow-[0_8px_32px_rgba(0,0,0,0.5)] z-10 backdrop-blur-md whitespace-nowrap">
               <i className="fas fa-microchip text-[var(--accent-cyan)] text-xl" />
               <div>
@@ -92,16 +93,16 @@ export default function About() {
               ))}
             </div>
             <div className="flex gap-4 flex-wrap items-center">
-              <a href="/resume" className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] no-underline transition-all hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,212,255,0.4)]">
+              <Link to="/resume" className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] no-underline transition-all hover:-translate-y-1 hover:shadow-[0_10px_36px_rgba(0,212,255,0.4)]">
                 View Resume
-              </a>
-              <a href="/contact" className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded border-2 border-[var(--accent-cyan)] text-[var(--accent-cyan)] no-underline transition-all hover:bg-[var(--accent-glow)] hover:-translate-y-1">
+              </Link>
+              <Link to="/contact" className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded border-2 border-[var(--accent-cyan)] text-[var(--accent-cyan)] no-underline transition-all hover:bg-[var(--accent-glow)] hover:-translate-y-1">
                 Contact Me
-              </a>
-              <a href="https://github.com/AkashMunnaPrasad" target="_blank" rel="noopener noreferrer" className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--border)] text-[var(--text-secondary)] no-underline text-lg transition-all hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] hover:bg-[var(--accent-glow)] hover:-translate-y-1">
+              </Link>
+              <a href="https://github.com/AkashMunnaPrasad" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--border)] text-[var(--text-secondary)] no-underline text-lg transition-all hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] hover:bg-[var(--accent-glow)] hover:-translate-y-1">
                 <i className="fab fa-github" />
               </a>
-              <a href="mailto:deskamp33@gmail.com" className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--border)] text-[var(--text-secondary)] no-underline text-lg transition-all hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] hover:bg-[var(--accent-glow)] hover:-translate-y-1">
+              <a href="mailto:deskamp33@gmail.com" aria-label="Email" className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-[var(--border)] text-[var(--text-secondary)] no-underline text-lg transition-all hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] hover:bg-[var(--accent-glow)] hover:-translate-y-1">
                 <i className="fas fa-envelope" />
               </a>
             </div>

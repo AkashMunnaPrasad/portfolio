@@ -24,8 +24,14 @@ export default function Contact() {
       } else {
         setStatus({ type: 'error', text: res.data.errors?.join(' ') || res.data.message || 'Failed to send.' });
       }
-    } catch {
-      setStatus({ type: 'error', text: 'Network error. Please try again.' });
+    } catch (err: any) {
+      setStatus({
+        type: 'error',
+        text:
+          err.response?.data?.errors?.join(' ') ||
+          err.response?.data?.message ||
+          'Network error. Please try again.',
+      });
     } finally {
       setSending(false);
     }
@@ -76,13 +82,13 @@ export default function Contact() {
           >
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)]" />
             <h3 className="font-['Space_Grotesk'] text-xl font-bold tracking-wider mb-7">Send a Message</h3>
-            <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required
+            <input name="name" value={form.name} onChange={handleChange} placeholder="Your Name" required aria-label="Your name" autoComplete="name"
               className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-5 transition-all focus:border-[var(--accent-cyan)] focus:shadow-[0_0_0_3px_rgba(0,212,255,0.1)]" />
-            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Your Email" required
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Your Email" required aria-label="Your email" autoComplete="email"
               className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-5 transition-all focus:border-[var(--accent-cyan)]" />
-            <input name="subject" value={form.subject} onChange={handleChange} placeholder="Subject"
+            <input name="subject" value={form.subject} onChange={handleChange} placeholder="Subject" aria-label="Subject"
               className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-5 transition-all focus:border-[var(--accent-cyan)]" />
-            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required rows={5}
+            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Your Message" required rows={5} aria-label="Your message" minLength={10}
               className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none mb-5 transition-all focus:border-[var(--accent-cyan)] resize-none" />
             <button type="submit" disabled={sending}
               className="w-full font-['Inter'] text-sm font-semibold tracking-widest uppercase py-4 border-none rounded bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)] disabled:opacity-50"

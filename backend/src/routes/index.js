@@ -41,7 +41,6 @@ router.post('/visitor/track', visitor.track);
 
 /* ── Admin Auth ── */
 router.post('/admin/login', auth.login);
-router.post('/admin/change-password', authAdmin, auth.changePassword);
 router.get('/admin/verify', authAdmin, auth.verifyToken);
 
 /* ── Admin Dashboard ── */

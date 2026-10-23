@@ -13,7 +13,25 @@ function getMailer() {
   return transporter;
 }
 
+function escapeHtml(value = '') {
+  return String(value).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+}
+
+function singleLine(value = '') {
+  return String(value).replace(/[\r\n]+/g, ' ').trim().slice(0, 200);
+}
+
 function buildContactEmail(name, email, subject, message) {
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safeSubject = escapeHtml(subject || '(No subject)');
+  const safeMessage = escapeHtml(message);
   return `<!DOCTYPE html>
 <html>
 <body style="background:#060b14;font-family:Arial,sans-serif;color:#e8f4ff;padding:40px">
@@ -23,11 +41,11 @@ function buildContactEmail(name, email, subject, message) {
     </div>
     <div style="padding:28px 32px">
       <p style="font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#4a6080;margin-bottom:4px">From</p>
-      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;margin-bottom:18px">${name} &lt;${email}&gt;</p>
+      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;margin-bottom:18px">${safeName} &lt;${safeEmail}&gt;</p>
       <p style="font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#4a6080;margin-bottom:4px">Subject</p>
-      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;margin-bottom:18px">${subject || '(No subject)'}</p>
+      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;margin-bottom:18px">${safeSubject}</p>
       <p style="font-size:.7rem;text-transform:uppercase;letter-spacing:.15em;color:#4a6080;margin-bottom:4px">Message</p>
-      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;white-space:pre-wrap">${message}</p>
+      <p style="background:#0b1220;padding:12px 16px;border-radius:8px;border-left:3px solid #00d4ff;white-space:pre-wrap">${safeMessage}</p>
     </div>
     <div style="background:#0b1220;padding:14px 32px;font-size:.75rem;color:#4a6080;text-align:center">Sent via Portfolio</div>
   </div>
@@ -42,9 +60,9 @@ async function sendContactNotification(name, email, subject, message) {
       from: `"Portfolio" <${ENV.MAIL_USER}>`,
       to: ENV.ADMIN_EMAIL,
       replyTo: email,
-      subject: `[Portfolio] ${subject || 'New message'} from ${name}`,
+      subject: `[Portfolio] ${singleLine(subject) || 'New message'} from ${singleLine(name)}`,
       html: buildContactEmail(name, email, subject, message),
-      text: `From: ${name} <${email}>\nSubject: ${subject || 'N/A'}\n\n${message}`,
+      text: `From: ${singleLine(name)} <${singleLine(email)}>\nSubject: ${singleLine(subject) || 'N/A'}\n\n${message}`,
     });
   } catch (err) {
     console.error('[MAIL ERROR]', err.message);

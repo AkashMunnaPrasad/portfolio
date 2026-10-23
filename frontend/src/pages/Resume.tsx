@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
 import PageHero from '../components/ui/PageHero';
 import { useApi } from '../hooks/useApi';
-import type { Experience, Education, Skill } from '../types';
+import type { Experience, Education, Skill, SiteSettings } from '../types';
 
 export default function Resume() {
   const { data: experiences } = useApi<Experience[]>('/experience');
   const { data: education } = useApi<Education[]>('/education');
   const { data: skills } = useApi<Skill[]>('/skills');
+  const { data: settings } = useApi<SiteSettings>('/settings');
+  const resumeUrl = settings?.resume_url?.trim();
 
   return (
     <>
@@ -118,18 +120,31 @@ export default function Resume() {
         </div>
       </section>
 
-      <section className="py-20 px-[8%] bg-[var(--bg-secondary)] text-center">
+      <section className="no-print py-20 px-[8%] bg-[var(--bg-secondary)] text-center">
         <h2 className="font-['Space_Grotesk'] text-xl font-black tracking-wider uppercase mb-8">
           Download My <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">Resume</span>
         </h2>
-        <a
-          href="/resume.pdf"
-          download
-          className="inline-flex items-center gap-3 font-['Inter'] text-sm font-semibold tracking-widest uppercase py-4 px-10 rounded border-none bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] cursor-pointer no-underline transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)]"
-        >
-          <i className="fas fa-download" />
-          Download CV
-        </a>
+        {resumeUrl ? (
+          <a
+            href={resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            className="inline-flex items-center gap-3 font-['Inter'] text-sm font-semibold tracking-widest uppercase py-4 px-10 rounded border-none bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] cursor-pointer no-underline transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)]"
+          >
+            <i className="fas fa-download" />
+            Download CV
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="inline-flex items-center gap-3 font-['Inter'] text-sm font-semibold tracking-widest uppercase py-4 px-10 rounded border-none bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)]"
+          >
+            <i className="fas fa-print" />
+            Print / Save as PDF
+          </button>
+        )}
       </section>
     </>
   );

@@ -3,19 +3,22 @@ const supabase = require('../config/db');
 const TABLE = 'visitors';
 
 async function track(req, res) {
-  const { page, referrer, device, city, region, country, ip } = req.body;
+  const { page, referrer, device, city, region, country } = req.body || {};
   const ua = req.headers['user-agent'] || '';
   if (/bot|crawl|spider|slurp|facebookexternalhit/i.test(ua)) {
     return res.json({ success: true, bot: true });
   }
+  const cfIp = req.headers['cf-connecting-ip'];
+  const ip = (typeof cfIp === 'string' && cfIp.trim()) || req.ip;
+
   const { error } = await supabase.from(TABLE).insert({
-    page: page || '/',
-    referrer: referrer || 'Direct',
-    device: device || 'Desktop',
-    city: city || '',
-    region: region || '',
-    country: country || '',
-    ip: ip || req.ip,
+    page: String(page || '/').slice(0, 300),
+    referrer: String(referrer || 'Direct').slice(0, 300),
+    device: device === 'Mobile' ? 'Mobile' : 'Desktop',
+    city: String(city || '').slice(0, 120),
+    region: String(region || '').slice(0, 120),
+    country: String(country || '').slice(0, 120),
+    ip: ip || '',
     user_agent: ua.slice(0, 300),
   });
   if (error) console.error('[VISITOR]', error.message);

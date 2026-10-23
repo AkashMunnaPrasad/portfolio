@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import api from '../../lib/api';
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subMsg, setSubMsg] = useState('');
@@ -50,6 +52,8 @@ export default function Footer() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Your Email Address"
+              aria-label="Email address for newsletter"
+              autoComplete="email"
               required
               className="bg-[var(--bg-card)] border border-[var(--border)] rounded px-3.5 py-3 text-sm text-[var(--text-primary)] outline-none transition-all focus:border-[var(--accent-cyan)]"
             />
@@ -73,15 +77,16 @@ export default function Footer() {
           </p>
           <div className="flex gap-3 mt-4">
             {[
-              { icon: 'fab fa-linkedin-in', href: 'https://www.linkedin.com/in/akash-munna-prasad-14014533a/' },
-              { icon: 'fab fa-github', href: 'https://github.com/AkashMunnaPrasad' },
-              { icon: 'fas fa-envelope', href: 'mailto:deskamp33@gmail.com' },
+              { icon: 'fab fa-linkedin-in', href: 'https://www.linkedin.com/in/akash-munna-prasad-14014533a/', label: 'LinkedIn' },
+              { icon: 'fab fa-github', href: 'https://github.com/AkashMunnaPrasad', label: 'GitHub' },
+              { icon: 'fas fa-envelope', href: 'mailto:deskamp33@gmail.com', label: 'Email' },
             ].map((s, i) => (
               <a
                 key={i}
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={s.label}
                 className="w-[42px] h-[42px] flex items-center justify-center rounded border border-[var(--border)] text-[var(--text-secondary)] no-underline bg-[var(--bg-card)] transition-all hover:text-[var(--accent-cyan)] hover:border-[var(--accent-cyan)] hover:bg-[var(--accent-glow)] hover:-translate-y-1"
               >
                 <i className={s.icon} />
@@ -92,7 +97,7 @@ export default function Footer() {
       </div>
 
       <div className="text-center py-6 border-t border-[var(--border)] text-sm text-[var(--text-muted)] tracking-wider">
-        &copy; 2026 Akash Munna Prasad. All Rights Reserved.
+        &copy; {CURRENT_YEAR} Akash Munna Prasad. All Rights Reserved.
       </div>
     </footer>
   );

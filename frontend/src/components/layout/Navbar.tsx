@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 import signature from '../../assets/signature.png';
 
 const links = [
@@ -28,16 +29,14 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isHome
+        isHome && !scrolled
           ? 'bg-transparent'
-          : scrolled
-            ? 'bg-[var(--bg-glass)] backdrop-blur-xl shadow-[var(--shadow-glow)] border-b border-[var(--border)]'
-            : 'bg-transparent'
+          : 'bg-[var(--bg-glass)] backdrop-blur-xl shadow-[var(--shadow-glow)] border-b border-[var(--border)]'
       }`}
     >
       <nav className="flex items-center justify-between h-[72px] px-[5%] max-w-[1400px] mx-auto">
         <Link to="/" className="flex items-center">
-          <img src={signature} alt="Akash Munna Prasad" className="h-9 w-auto object-contain brightness-0 invert" />
+          <img src={signature} alt="Akash Munna Prasad" className="signature-logo h-9 w-auto object-contain brightness-0 invert" />
         </Link>
 
         <ul className="hidden md:flex items-center gap-8 list-none">
@@ -57,10 +56,13 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <button
             className="md:hidden text-[var(--accent-cyan)] p-1.5 border border-[var(--border)] rounded cursor-pointer hover:bg-[var(--accent-glow)] transition-all"
             onClick={() => setOpen(!open)}
-            aria-label="Menu"
+            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
           >
             {open ? (
               <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -76,6 +78,9 @@ export default function Navbar() {
       </nav>
 
       <div
+        id="mobile-menu"
+        aria-hidden={!open}
+        inert={!open}
         className={`fixed top-[72px] right-0 w-[260px] h-screen bg-[var(--bg-glass)] backdrop-blur-xl border-l border-[var(--border)] p-8 flex flex-col gap-6 transition-transform duration-400 z-40 md:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
       >
         {links.map((l) => (

@@ -9,6 +9,17 @@ function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+function parseTags(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return String(raw).split(',').map((tag) => tag.trim()).filter(Boolean);
+  }
+}
+
 async function getAll(req, res) {
   let query = supabase.from(TABLE).select('*').order('created_at', { ascending: false });
   if (!req.admin) {
@@ -20,7 +31,12 @@ async function getAll(req, res) {
 }
 
 async function getBySlug(req, res) {
-  const { data, error } = await supabase.from(TABLE).select('*').eq('slug', req.params.slug).single();
+  const { data, error } = await supabase
+    .from(TABLE)
+    .select('*')
+    .eq('slug', req.params.slug)
+    .eq('published', true)
+    .single();
   if (error) return res.status(404).json({ success: false, message: 'Post not found.' });
   await supabase.from(TABLE).update({ views: (data.views || 0) + 1 }).eq('id', data.id);
   res.json({ success: true, post: data });
@@ -32,20 +48,25 @@ async function create(req, res) {
     return res.status(400).json({ success: false, message: 'title and content required.' });
   }
   let slug = slugify(title);
+  const { data: existing } = await supabase.from(TABLE).select('id').eq('slug', slug).maybeSingle();
+  if (existing) slug = `${slug}-${Date.now()}`;
   let cover_image = null;
   if (req.file) {
     const fileName = `${uuidv4()}${path.extname(req.file.originalname)}`;
-    const fileBuffer = fs.readFileSync(req.file.path);
-    const { error: uploadError } = await supabase.storage
-      .from('portfolio-images')
-      .upload(fileName, fileBuffer, { contentType: req.file.mimetype });
-    if (!uploadError) {
-      const { data: urlData } = supabase.storage.from('portfolio-images').getPublicUrl(fileName);
-      cover_image = urlData.publicUrl;
+    try {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio-images')
+        .upload(fileName, fileBuffer, { contentType: req.file.mimetype });
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage.from('portfolio-images').getPublicUrl(fileName);
+        cover_image = urlData.publicUrl;
+      }
+    } finally {
+      try { fs.unlinkSync(req.file.path); } catch {}
     }
-    fs.unlinkSync(req.file.path);
   }
-  const parsedTags = tags ? (Array.isArray(tags) ? tags : JSON.parse(tags)) : [];
+  const parsedTags = parseTags(tags);
   const { data, error } = await supabase.from(TABLE).insert({
     title, slug, content, excerpt: excerpt || '',
     cover_image, tags: parsedTags,
@@ -62,21 +83,33 @@ async function update(req, res) {
     if (req.body[f] !== undefined) updates[f] = req.body[f];
   });
   if (req.body.tags !== undefined) {
-    updates.tags = Array.isArray(req.body.tags) ? req.body.tags : JSON.parse(req.body.tags);
+    updates.tags = parseTags(req.body.tags);
   }
   if (req.body.published !== undefined) updates.published = req.body.published === 'true';
-  if (req.body.title) updates.slug = slugify(req.body.title);
+  if (req.body.title) {
+    updates.slug = slugify(req.body.title);
+    const { data: existing } = await supabase
+      .from(TABLE)
+      .select('id')
+      .eq('slug', updates.slug)
+      .neq('id', id)
+      .maybeSingle();
+    if (existing) updates.slug = `${updates.slug}-${Date.now()}`;
+  }
   if (req.file) {
     const fileName = `${uuidv4()}${path.extname(req.file.originalname)}`;
-    const fileBuffer = fs.readFileSync(req.file.path);
-    const { error: uploadError } = await supabase.storage
-      .from('portfolio-images')
-      .upload(fileName, fileBuffer, { contentType: req.file.mimetype });
-    if (!uploadError) {
-      const { data: urlData } = supabase.storage.from('portfolio-images').getPublicUrl(fileName);
-      updates.cover_image = urlData.publicUrl;
+    try {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      const { error: uploadError } = await supabase.storage
+        .from('portfolio-images')
+        .upload(fileName, fileBuffer, { contentType: req.file.mimetype });
+      if (!uploadError) {
+        const { data: urlData } = supabase.storage.from('portfolio-images').getPublicUrl(fileName);
+        updates.cover_image = urlData.publicUrl;
+      }
+    } finally {
+      try { fs.unlinkSync(req.file.path); } catch {}
     }
-    fs.unlinkSync(req.file.path);
   }
   if (Object.keys(updates).length === 0) {
     return res.status(400).json({ success: false, message: 'No fields to update.' });

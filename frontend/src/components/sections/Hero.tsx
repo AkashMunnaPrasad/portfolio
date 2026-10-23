@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import profileImg from '../../assets/profile.png';
+import profileImg from '../../assets/profile.webp';
 
 const roles = [
   'VLSI Design Engineer',
@@ -59,19 +59,22 @@ export default function Hero() {
         className="flex-1 max-w-[600px] text-center lg:text-left"
       >
         <p className="font-['Inter'] text-sm font-light tracking-widest uppercase text-[var(--text-secondary)] mb-1">I'm</p>
-        <h1 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight mb-5 bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent whitespace-nowrap">
+        <h1 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight mb-5 bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">
           Akash Munna Prasad
         </h1>
-        <p className="text-base text-[var(--text-secondary)] tracking-wider mb-1">I am passionate</p>
+        <p className="text-base text-[var(--text-secondary)] tracking-wider mb-1">I'm a passionate</p>
         <span
           ref={textRef}
           className="block font-['Space_Grotesk'] text-[clamp(1.3rem,3vw,2rem)] font-bold text-[var(--accent-cyan)] min-h-[2.5rem] mb-8"
           style={{ textShadow: '0 0 24px var(--accent-cyan)' }}
         />
         <div className="flex gap-5 flex-wrap justify-center lg:justify-start">
-          <button className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded border-none bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)]">
+          <Link
+            to="/resume"
+            className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded border-none bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] text-[#060b14] no-underline cursor-pointer transition-all hover:-translate-y-1 hover:shadow-[0_10px_40px_rgba(0,212,255,0.4)]"
+          >
             Download CV
-          </button>
+          </Link>
           <Link
             to="/projects"
             className="font-['Inter'] text-sm font-semibold tracking-widest uppercase py-3.5 px-8 rounded border-2 border-[var(--accent-cyan)] text-[var(--accent-cyan)] no-underline cursor-pointer transition-all hover:bg-[var(--accent-glow)] hover:-translate-y-1"
@@ -95,6 +98,7 @@ export default function Hero() {
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={s.label}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4, delay: 0.8 + i * 0.15, type: 'spring', stiffness: 200 }}
@@ -122,7 +126,15 @@ export default function Hero() {
           <div className="absolute w-[400px] h-[400px] max-sm:w-[260px] max-sm:h-[260px] rounded-full border border-solid border-[rgba(123,47,255,0.18)] animate-spin" style={{ animationDuration: '28s', animationDirection: 'reverse' }} />
           <div className="relative w-[340px] h-[340px] max-sm:w-[220px] max-sm:h-[220px] z-10">
             <div className="w-full h-full rounded-[22px] overflow-hidden">
-              <img src={profileImg} alt="Akash Munna Prasad" className="w-full h-full object-cover" />
+              <img
+                src={profileImg}
+                alt="Akash Munna Prasad"
+                width={340}
+                height={340}
+                fetchPriority="high"
+                decoding="async"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
           <div className="absolute bottom-[60px] left-1/2 -translate-x-1/2 bg-[var(--bg-card)] border border-[rgba(0,212,255,0.4)] rounded-full px-8 py-2.5 text-[0.8rem] font-semibold tracking-widest uppercase text-[var(--text-secondary)] flex items-center gap-3 z-20 shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md whitespace-nowrap max-sm:bottom-[46px]">

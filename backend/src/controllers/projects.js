@@ -29,7 +29,6 @@ async function uploadFile(file) {
     console.error('[UPLOAD] No file provided');
     return null;
   }
-  console.log('[UPLOAD] File details:', { originalname: file.originalname, mimetype: file.mimetype, size: file.size, path: file.path });
   const ext = path.extname(file.originalname);
   const fileName = `${uuidv4()}${ext}`;
   let fileBuffer;
@@ -48,7 +47,6 @@ async function uploadFile(file) {
     return null;
   }
   const { data: urlData } = supabase.storage.from('portfolio-images').getPublicUrl(fileName);
-  console.log('[UPLOAD] Success, URL:', urlData.publicUrl);
   return urlData.publicUrl;
 }
 
@@ -146,18 +144,12 @@ async function create(req, res) {
   if (!title || !category || !description) {
     return res.status(400).json({ success: false, message: 'title, category, and description required.' });
   }
-  console.log('[CREATE] body fields:', Object.keys(req.body));
-  console.log('[CREATE] files keys:', req.files ? Object.keys(req.files) : 'no files');
-  console.log('[CREATE] has single file:', !!req.file);
   let image_url = null;
   if (req.files?.image?.[0]) {
-    console.log('[CREATE] Found image in req.files.image[0]');
     image_url = await uploadFile(req.files.image[0]);
   } else if (req.file) {
-    console.log('[CREATE] Found image in req.file');
     image_url = await uploadFile(req.file);
   } else {
-    console.log('[CREATE] No image file found in request');
   }
   let slug = slugify(title);
   const { data: existing } = await supabase.from(TABLE).select('id').eq('slug', slug).maybeSingle();
@@ -226,10 +218,8 @@ async function update(req, res) {
   }
   const coverFile = req.files?.image?.[0] || req.file;
   if (coverFile) {
-    console.log('[UPDATE] Uploading new cover image');
     updates.image_url = await uploadFile(coverFile);
   } else {
-    console.log('[UPDATE] No new cover image');
   }
   if (Object.keys(updates).length === 0) {
     return res.status(400).json({ success: false, message: 'No fields to update.' });
