@@ -120,6 +120,48 @@ export default function Resume() {
         </div>
       </section>
 
+      <section className="py-20 px-[8%] bg-[var(--bg-secondary)]">
+        <h2 className="font-['Space_Grotesk'] text-xl font-black tracking-wider uppercase mb-8 flex items-center gap-3">
+          <i className="fas fa-code text-[var(--accent-cyan)]" />
+          <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">Technical Skills</span>
+        </h2>
+        {skills && skills.length > 0 ? (
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            {[...new Set(skills.map((s) => s.category))].map((category) => (
+              <div key={category} className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-lg)] p-6">
+                <h3 className="font-['Space_Grotesk'] text-sm font-bold uppercase tracking-wider text-[var(--accent-cyan)] mb-6 border-b border-[var(--border)] pb-2">
+                  {category}
+                </h3>
+                <div className="space-y-4">
+                  {skills
+                    .filter((s) => s.category === category)
+                    .sort((a, b) => (b.percent || 0) - (a.percent || 0))
+                    .map((skill) => (
+                      <div key={skill.id} className="group">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium text-[var(--text-primary)]">{skill.name}</span>
+                          <span className="text-xs font-bold text-[var(--accent-cyan)]">{skill.percent}%</span>
+                        </div>
+                        <div className="w-full h-2 bg-[rgba(255,255,255,0.08)] rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] transition-all duration-[2s] ease-out"
+                            style={{ width: `${skill.percent}%` }}
+                          />
+                        </div>
+                        <p className="text-[0.66rem] text-[var(--text-muted)] uppercase tracking-wider mt-1">
+                          {skill.level}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-[var(--text-muted)]">No skills added yet.</p>
+        )}
+      </section>
+
       <section className="no-print py-20 px-[8%] bg-[var(--bg-secondary)] text-center">
         <h2 className="font-['Space_Grotesk'] text-xl font-black tracking-wider uppercase mb-8">
           Download My <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">Resume</span>

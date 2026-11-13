@@ -9,6 +9,7 @@ const sidebarLinks = [
   { to: '/admin/projects', label: 'Projects', icon: 'fas fa-project-diagram' },
 
   { to: '/admin/skills', label: 'Skills', icon: 'fas fa-code' },
+  { to: '/admin/certificates', label: 'Certificates', icon: 'fas fa-certificate' },
   { to: '/admin/experience', label: 'Experience', icon: 'fas fa-briefcase' },
   { to: '/admin/education', label: 'Education', icon: 'fas fa-graduation-cap' },
   { to: '/admin/settings', label: 'Settings', icon: 'fas fa-cog' },

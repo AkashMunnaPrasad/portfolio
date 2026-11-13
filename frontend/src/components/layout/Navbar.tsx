@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ThemeToggle from './ThemeToggle';
 import signature from '../../assets/signature.png';
 
 const links = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About' },
-  { to: '/skills', label: 'Skills' },
   { to: '/resume', label: 'Resume' },
   { to: '/projects', label: 'Projects' },
 
@@ -56,7 +54,6 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <ThemeToggle />
           <button
             className="md:hidden text-[var(--accent-cyan)] p-1.5 border border-[var(--border)] rounded cursor-pointer hover:bg-[var(--accent-glow)] transition-all"
             onClick={() => setOpen(!open)}

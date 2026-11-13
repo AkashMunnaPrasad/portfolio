@@ -160,6 +160,45 @@ async function seed() {
   }
   console.log(`✓ ${settings.length} settings upserted`);
 
+  // ── Certificates ──
+  const certificates = [
+    {
+      title: 'CMOS Digital VLSI Design',
+      issuer: 'NPTEL · IIT Kharagpur',
+      date: 'Jan 2024',
+      credential_id: 'NPTEL-VLSI-2024-001',
+      score: '85%',
+      type: 'Elite',
+      description: 'Fundamentals of CMOS technology, MOS transistor physics, fabrication process, CMOS inverter characteristics, and VLSI design flow. Strengthened understanding of semiconductor devices and digital circuit implementation.',
+      image_url: '',
+      published: true,
+    },
+    {
+      title: 'Digital Design with Verilog HDL',
+      issuer: 'NPTEL · IIT Kharagpur',
+      date: 'Feb 2024',
+      credential_id: 'NPTEL-VERILOG-2024-002',
+      score: '78%',
+      type: 'Elite',
+      description: 'Verilog HDL modeling, simulation, and synthesis of digital circuits. Covered combinational & sequential logic, FSM design, testbench writing, and FPGA implementation flow.',
+      image_url: '',
+      published: true,
+    },
+    {
+      title: 'Embedded Systems & IoT',
+      issuer: 'ESTC Ramnagar (MSME)',
+      date: 'Jun 2023',
+      credential_id: 'MSME-EMBED-2023-003',
+      score: '88%',
+      type: 'Distinction',
+      description: 'Microcontroller programming, sensor integration, real-time data processing, and hardware-software co-design for embedded applications using Embedded C.',
+      image_url: '',
+      published: true,
+    },
+  ];
+  const { error: errCert } = await supabase.from('certificates').insert(certificates);
+  if (errCert) console.error('Certificates error:', errCert.message); else console.log(`✓ ${certificates.length} certificates inserted`);
+
   console.log('\n✅ Seeding complete!');
 }
 

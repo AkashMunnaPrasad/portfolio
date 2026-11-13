@@ -108,6 +108,36 @@ export interface Subscriber {
   created_at: string;
 }
 
+export interface Certificate {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  credential_id: string;
+  score: string;
+  type: string;
+  description: string;
+  image_url: string | null;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CertificateView {
+  id: string;
+  certificate_id: string;
+  ip: string;
+  user_agent: string;
+  browser: string;
+  os: string;
+  device: string;
+  screen: string;
+  language: string;
+  timezone: string;
+  viewed_at: string;
+  certificates?: { title: string; issuer: string };
+}
+
 export interface Visitor {
   id: string;
   page: string;
@@ -147,6 +177,7 @@ export interface DashboardSummary {
   blogPosts: number;
   experiences: number;
   education: number;
+  certificates: number;
 }
 
 export interface ApiResponse<T> {

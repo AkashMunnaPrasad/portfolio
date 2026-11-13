@@ -1,55 +1,8 @@
-import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import profileImg from '../../assets/profile.webp';
 
-const roles = [
-  'VLSI Design Engineer',
-  'ECE B.Tech Student',
-  'RTL Designer',
-  'Web Developer',
-  'Circuit Enthusiast',
-];
-
 export default function Hero() {
-  const textRef = useRef<HTMLSpanElement>(null);
-  const indexRef = useRef(0);
-  const charIndexRef = useRef(0);
-  const deletingRef = useRef(false);
-
-  useEffect(() => {
-    const el = textRef.current;
-    if (!el) return;
-    let timer: ReturnType<typeof setTimeout>;
-
-    function type() {
-      const current = roles[indexRef.current];
-      if (!deletingRef.current) {
-        if (el) el.textContent = current.slice(0, charIndexRef.current + 1);
-        charIndexRef.current++;
-        if (charIndexRef.current === current.length) {
-          deletingRef.current = true;
-          timer = setTimeout(type, 1800);
-          return;
-        }
-        timer = setTimeout(type, 80);
-      } else {
-        if (el) el.textContent = current.slice(0, charIndexRef.current - 1);
-        charIndexRef.current--;
-        if (charIndexRef.current === 0) {
-          deletingRef.current = false;
-          indexRef.current = (indexRef.current + 1) % roles.length;
-          timer = setTimeout(type, 500);
-          return;
-        }
-        timer = setTimeout(type, 45);
-      }
-    }
-
-    timer = setTimeout(type, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <section className="min-h-screen flex items-center justify-between px-[8%] py-[120px] gap-16 overflow-hidden max-w-[1400px] mx-auto flex-col-reverse lg:flex-row">
       <motion.div
@@ -62,12 +15,7 @@ export default function Hero() {
         <h1 className="font-['Space_Grotesk'] text-[clamp(2rem,4.5vw,3.5rem)] font-black leading-tight mb-5 bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">
           Akash Munna Prasad
         </h1>
-        <p className="text-base text-[var(--text-secondary)] tracking-wider mb-1">I'm a passionate</p>
-        <span
-          ref={textRef}
-          className="block font-['Space_Grotesk'] text-[clamp(1.3rem,3vw,2rem)] font-bold text-[var(--accent-cyan)] min-h-[2.5rem] mb-8"
-          style={{ textShadow: '0 0 24px var(--accent-cyan)' }}
-        />
+        <p className="text-base text-[var(--text-secondary)] tracking-wider mb-8">Explore the page to know more</p>
         <div className="flex gap-5 flex-wrap justify-center lg:justify-start">
           <Link
             to="/resume"

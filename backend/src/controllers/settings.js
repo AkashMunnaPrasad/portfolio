@@ -19,13 +19,14 @@ async function update(req, res) {
 }
 
 async function dashboard(req, res) {
-  const [contacts, subscribers, projects, blog, experience, education] = await Promise.all([
+  const [contacts, subscribers, projects, blog, experience, education, certificates] = await Promise.all([
     supabase.from('contacts').select('*', { count: 'exact', head: true }),
     supabase.from('subscribers').select('*', { count: 'exact', head: true }).eq('active', true),
     supabase.from('projects').select('*', { count: 'exact', head: true }),
     supabase.from('blog_posts').select('*', { count: 'exact', head: true }).eq('published', true),
     supabase.from('experiences').select('*', { count: 'exact', head: true }),
     supabase.from('education').select('*', { count: 'exact', head: true }),
+    supabase.from('certificates').select('*', { count: 'exact', head: true }),
   ]);
   res.json({
     success: true,
@@ -36,6 +37,7 @@ async function dashboard(req, res) {
       blogPosts: blog.count || 0,
       experiences: experience.count || 0,
       education: education.count || 0,
+      certificates: certificates.count || 0,
     },
   });
 }

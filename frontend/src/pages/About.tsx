@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import CertificateSection from '../components/sections/CertificateSection';
 import profileImg from '../assets/profile.webp';
 
 const timeline = [
@@ -7,32 +8,46 @@ const timeline = [
     year: '2023 - Present',
     title: 'B.Tech in Electronics & Communication',
     place: 'Meerut Institute of Technology',
-    desc: 'Focused on VLSI design, digital circuits, and embedded systems. Working on RTL design projects using Verilog and FPGA platforms.',
-    tags: ['VLSI', 'Verilog', 'FPGA', 'Digital Circuits'],
+    desc: 'Deep dive into VLSI design, digital electronics, and embedded systems. Mastering RTL design with Verilog HDL, FPGA implementation, CMOS circuit design, and RTL-to-GDSII flow for semiconductor chip development.',
+    tags: ['VLSI', 'Verilog', 'FPGA', 'CMOS', 'Digital Circuits'],
   },
   {
     year: '2022 - 2023',
-    title: 'Web Development Journey',
-    place: 'Self-Learning & Projects',
-    desc: 'Built full-stack web applications using React, Node.js, and modern CSS. Developed multiple portfolio and utility projects.',
-    tags: ['React', 'Node.js', 'TypeScript', 'Tailwind'],
+    title: 'VLSI Internship - NIT Delhi',
+    place: 'NIT Delhi (Research-based)',
+    desc: 'Hands-on experience in VLSI design and digital hardware development. Worked on RTL coding, simulation, and synthesis of digital circuits using industry-standard EDA tools and FPGA platforms.',
+    tags: ['RTL Design', 'Simulation', 'Synthesis', 'EDA Tools'],
+  },
+  {
+    year: '2022',
+    title: 'VLSI Internship - Internshala / IITM Pravartak',
+    place: 'Online (IITM Pravartak)',
+    desc: 'Focused on Verilog HDL, FPGA implementation, and digital system design. Gained practical knowledge in hardware description languages and programmable logic device programming.',
+    tags: ['Verilog', 'FPGA', 'Digital System Design', 'IITM Pravartak'],
+  },
+  {
+    year: '2021',
+    title: 'Embedded Systems Internship',
+    place: 'ESTC Ramnagar (MSME)',
+    desc: 'Worked on embedded hardware and microcontroller-based applications. Gained experience in sensor integration, real-time data processing, and hardware-software co-design for embedded systems.',
+    tags: ['Embedded C', 'Microcontrollers', 'IoT', 'Hardware'],
   },
   {
     year: '2021',
     title: 'Higher Secondary (XII)',
     place: 'CBSE Board',
-    desc: 'Completed higher secondary education with a focus on Science and Mathematics.',
-    tags: ['Science', 'Mathematics'],
+    desc: 'Completed senior secondary education with Science and Mathematics, building the foundation for electronics and communication engineering.',
+    tags: ['Physics', 'Mathematics', 'Science'],
   },
 ];
 
 const interests = [
-  { icon: 'fas fa-microchip', title: 'VLSI Design', desc: 'RTL design, synthesis, and timing analysis for digital circuits.' },
-  { icon: 'fas fa-code', title: 'Web Development', desc: 'Building modern, performant web applications with React and Node.js.' },
-  { icon: 'fas fa-wave-square', title: 'Signal Processing', desc: 'DSP algorithms, FFT analysis, and filter design using Python.' },
-  { icon: 'fas fa-network-wired', title: 'IoT', desc: 'Embedded systems, sensor integration, and real-time data processing.' },
-  { icon: 'fas fa-brain', title: 'Machine Learning', desc: 'Applying ML to hardware design and signal analysis problems.' },
-  { icon: 'fas fa-cogs', title: 'Embedded Systems', desc: 'Microcontroller programming and hardware-software co-design.' },
+  { icon: 'fas fa-microchip', title: 'VLSI Design', desc: 'RTL design, CMOS circuits, synthesis, timing analysis, and RTL-to-GDSII flow for semiconductor chips.' },
+  { icon: 'fas fa-code', title: 'Verilog HDL', desc: 'Hardware description language for digital circuit modeling, simulation, and FPGA implementation.' },
+  { icon: 'fas fa-microchip', title: 'FPGA Design', desc: 'Programmable logic design, synthesis, place-and-route, and hardware acceleration on Xilinx and Lattice platforms.' },
+  { icon: 'fas fa-wave-square', title: 'Signal Processing', desc: 'DSP algorithms, FFT analysis, filter design, and real-time signal processing using Python and MATLAB.' },
+  { icon: 'fas fa-network-wired', title: 'Embedded Systems', desc: 'Microcontroller programming, sensor integration, and hardware-software co-design for embedded applications.' },
+  { icon: 'fas fa-brain', title: 'Digital Electronics', desc: 'Combinational and sequential logic circuits, logic gates, flip-flops, counters, and state machine design.' },
 ];
 
 export default function About() {
@@ -130,41 +145,64 @@ export default function About() {
         </div>
       </section>
 
-      <section className="py-24 px-[8%] bg-[var(--bg-secondary)]">
-        <div className="text-center mb-14">
-          <h2 className="font-['Space_Grotesk'] text-[clamp(1.8rem,4vw,2.8rem)] font-black tracking-wider uppercase">
+      <section className="py-24 px-[8%] bg-[var(--bg-primary)]">
+        <div className="text-center mb-16">
+          <h2 className="font-['Space_Grotesk'] text-[clamp(2rem,5vw,3rem)] font-black tracking-wider uppercase mb-3">
             MY <span className="bg-gradient-to-r from-[var(--accent-cyan)] to-[var(--accent-violet)] bg-clip-text text-transparent">JOURNEY</span>
           </h2>
+          <p className="text-sm text-[var(--text-muted)] tracking-widest uppercase">From classroom to chip design</p>
         </div>
-        <div className="max-w-[860px] mx-auto pl-10 relative">
-          <div className="absolute top-0 bottom-0 left-[18px] w-0.5 bg-gradient-to-b from-[var(--accent-cyan)] via-[var(--accent-violet)] to-transparent" />
-          {timeline.map((item, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.15 }}
-              className="relative mb-10 pl-8 group">
-              <div className="absolute left-[-2.5rem] top-0 w-[38px] h-[38px] rounded-full bg-[var(--bg-card)] border-2 border-[var(--accent-cyan)] flex items-center justify-center text-[var(--accent-cyan)] z-[2] shadow-[0_0_16px_rgba(0,212,255,0.25)] transition-all group-hover:bg-[rgba(0,212,255,0.15)] group-hover:shadow-[0_0_28px_rgba(0,212,255,0.45)]">
-                <i className="fas fa-graduation-cap text-sm" />
-              </div>
-              <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-[var(--radius-md)] p-6 transition-all group-hover:border-[var(--border-hover)] group-hover:translate-x-1 group-hover:shadow-[var(--shadow-glow)]">
-                <span className="font-['Space_Grotesk'] text-[0.72rem] font-bold tracking-widest text-[var(--accent-cyan)] uppercase bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.2)] rounded-full px-3 py-0.5 inline-block mb-3">
-                  {item.year}
-                </span>
-                <h3 className="font-['Space_Grotesk'] text-sm font-extrabold uppercase tracking-wider text-[var(--text-primary)] mt-2 mb-1">{item.title}</h3>
-                <p className="text-sm text-[var(--accent-violet)] flex items-center gap-1.5 mb-3 font-medium">
-                  <i className="fas fa-map-marker-alt text-xs" /> {item.place}
-                </p>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">{item.desc}</p>
-                <div className="flex flex-wrap gap-2">
-                  {item.tags.map((t) => (
-                    <span key={t} className="text-[0.66rem] font-bold px-2.5 py-0.5 bg-[rgba(0,212,255,0.1)] text-[var(--accent-cyan)] border border-[rgba(0,212,255,0.25)] rounded-full tracking-wider uppercase">
-                      {t}
-                    </span>
-                  ))}
+
+        <div className="max-w-[900px] mx-auto relative">
+          {/* Timeline connector line */}
+          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-gradient-to-b from-[var(--accent-cyan)] via-[var(--accent-violet)] to-[var(--border)]" />
+
+          {timeline.map((item, i) => {
+            const isLeft = i % 2 === 0;
+            return (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: isLeft ? -40 : 40, y: 20 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className={`relative mb-16 ${isLeft ? 'pl-[calc(50%+24px)] text-right lg:px-[6%]' : 'pr-[calc(50%+24px)] lg:px-[6%]'}`}
+              >
+                {/* Timeline marker */}
+                <motion.div
+                  whileHover={{ scale: 1.25, rotate: 45 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                  className="absolute left-1/2 top-[-6px] -translate-x-1/2 -translate-y-1/2 w-[16px] h-[16px] rounded-full bg-[var(--bg-card)] border-2 border-[var(--accent-cyan)] z-[10] shadow-[0_0_0_6px_rgba(0,212,255,0.25)] cursor-pointer transition-all"
+                >
+                  <i className="fas fa-microchip text-[0.5rem] text-[var(--accent-cyan)]" />
+                </motion.div>
+
+                <div className="inline-block max-w-[calc(50%-40px)]">
+                  <span className="font-['Space_Grotesk'] text-[0.7rem] font-bold tracking-widest text-[var(--accent-cyan)] uppercase bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)] rounded-full px-3 py-1 inline-block mb-2 block">
+                    {item.year}
+                  </span>
+                  <h3 className="font-['Space_Grotesk'] text-[clamp(1rem,1.2vw,1.1rem)] font-extrabold uppercase tracking-wider text-[var(--text-primary)] mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-[var(--accent-violet)] flex items-center justify-end gap-1.5 mb-3 font-medium">
+                    <i className="fas fa-map-marker-alt" /> {item.place}
+                  </p>
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-4">{item.desc}</p>
+                  <div className="flex flex-wrap gap-2 justify-end">
+                    {item.tags.map((t) => (
+                      <span key={t} className="text-[0.62rem] font-bold px-2.5 py-0.5 bg-[rgba(0,212,255,0.1)] text-[var(--accent-cyan)] border border-[rgba(0,212,255,0.25)] rounded-full tracking-wider uppercase">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </section>
+
+      <CertificateSection />
 
       <section className="py-24 px-[8%] bg-[var(--bg-primary)]">
         <div className="text-center mb-14">

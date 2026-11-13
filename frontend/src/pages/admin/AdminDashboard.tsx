@@ -19,6 +19,7 @@ export default function AdminDashboard() {
 
         { label: 'Experiences', val: summary.experiences, icon: 'fas fa-briefcase', color: '#ffd93d' },
         { label: 'Education', val: summary.education, icon: 'fas fa-graduation-cap', color: '#6bcbff' },
+        { label: 'Certificates', val: summary.certificates, icon: 'fas fa-certificate', color: '#ff6b9d' },
       ]
     : [];
 

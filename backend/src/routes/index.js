@@ -7,6 +7,7 @@ const auth = require('../controllers/auth');
 const projects = require('../controllers/projects');
 const skills = require('../controllers/skills');
 const blog = require('../controllers/blog');
+const certificates = require('../controllers/certificates');
 const experience = require('../controllers/experience');
 const education = require('../controllers/education');
 const contact = require('../controllers/contact');
@@ -28,6 +29,9 @@ router.get('/projects/stats', projects.getStats);
 router.get('/projects/:slug', projects.getBySlug);
 
 router.get('/skills', skills.getAll);
+
+router.get('/certificates', certificates.getAll);
+router.post('/certificates/:id/view', certificates.trackView);
 
 router.get('/blog', blog.getAll);
 router.get('/blog/:slug', blog.getBySlug);
@@ -77,6 +81,16 @@ router.put('/admin/projects/:id/images/reorder', authAdmin, projects.reorderImag
 router.post('/admin/skills', authAdmin, skills.create);
 router.put('/admin/skills/:id', authAdmin, skills.update);
 router.delete('/admin/skills/:id', authAdmin, skills.remove);
+
+/* ── Admin: Certificates ── */
+router.get('/admin/certificates', authAdmin, certificates.getAll);
+router.post('/admin/certificates', authAdmin, certificates.create);
+router.put('/admin/certificates/:id', authAdmin, certificates.update);
+router.delete('/admin/certificates/:id', authAdmin, certificates.remove);
+router.patch('/admin/certificates/:id/publish', authAdmin, certificates.togglePublish);
+
+/* ── Admin: Certificate Views (who viewed which certificate) ── */
+router.get('/admin/certificate-views', authAdmin, certificates.getViews);
 
 /* ── Admin: Blog ── */
 router.get('/admin/blog', authAdmin, blog.getAll);
