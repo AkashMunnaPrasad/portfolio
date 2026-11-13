@@ -47,6 +47,11 @@ router.post('/visitor/track', visitor.track);
 router.post('/admin/login', auth.login);
 router.get('/admin/verify', authAdmin, auth.verifyToken);
 
+/* ── Admin: Forgot Password / OTP (public, rate-limited) ── */
+router.post('/admin/forgot-password', auth.forgotPassword);
+router.post('/admin/verify-otp', auth.verifyOtp);
+router.post('/admin/reset-password', auth.resetPassword);
+
 /* ── Admin Dashboard ── */
 router.get('/admin/dashboard', authAdmin, settings.dashboard);
 

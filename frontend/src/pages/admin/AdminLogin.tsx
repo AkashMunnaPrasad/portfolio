@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 export default function AdminLogin() {
@@ -65,6 +65,15 @@ export default function AdminLogin() {
         >
           {loading ? 'Signing in...' : 'Sign In'}
         </button>
+        <p className="text-center mt-6 text-[0.68rem] text-[var(--text-muted)]">
+          Forgot your password?{' '}
+          <Link
+            to="/admin/forgot-password"
+            className="text-[var(--accent-cyan)] font-medium hover:underline no-underline"
+          >
+            Reset via WhatsApp OTP
+          </Link>
+        </p>
       </form>
     </div>
   );

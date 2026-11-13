@@ -47,6 +47,18 @@ export function useAuth() {
     }
   }, []);
 
+  const forgotPassword = useCallback(async (username: string) => {
+    setLoading(true);
+    try {
+      const res = await api.post('/admin/forgot-password', { username });
+      return res.data;
+    } catch (err: any) {
+      throw new Error(err.response?.data?.message || 'Failed to send OTP');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('admin_token');
     setToken(null);
@@ -66,5 +78,5 @@ export function useAuth() {
     return () => clearTimeout(timer);
   }, [token, logout]);
 
-  return { login, logout, loading, isAuthenticated: isTokenValid(token), token };
+  return { login, forgotPassword, logout, loading, isAuthenticated: isTokenValid(token), token };
 }
