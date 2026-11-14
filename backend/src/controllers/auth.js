@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { getMailer } = require('../utils/email');
 const ENV = require('../config/env');
 
 const adminCredentials = {
@@ -18,6 +19,7 @@ const resetTokens = new Map(); // token -> { username, expiresAt }
 const OTP_TTL_MS = 5 * 60 * 1000;      // 5 minutes
 const RESET_TOKEN_TTL_MS = 10 * 60 * 1000; // 10 minutes
 const WHATSAPP_TO = ENV.ADMIN_WHATSAPP || '8252336811';
+const OTP_EMAIL_TO = ENV.ADMIN_OTP_EMAIL || 'deskamp33@gmail.com';
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -27,7 +29,7 @@ function generateResetToken() {
   return crypto.randomBytes(32).toString('hex');
 }
 
-/* ── Send OTP via WhatsApp ── */
+/* ── Send OTP via WhatsApp (Twilio) ── */
 async function sendWhatsappOtp(phone, otp) {
   const accountSid = ENV.TWILIO_ACCOUNT_SID;
   const authToken = ENV.TWILIO_AUTH_TOKEN;
@@ -35,21 +37,14 @@ async function sendWhatsappOtp(phone, otp) {
 
   if (accountSid && authToken && fromWhatsApp) {
     try {
-      let twilio;
-      try {
-        twilio = require('twilio');
-      } catch {
-        // twilio not installed
-      }
-      if (twilio) {
-        const client = twilio(accountSid, authToken);
-        await client.messages.create({
-          body: `Your admin password reset OTP is: ${otp}. Valid for 5 minutes. Do not share this code.`,
-          from: fromWhatsApp,
-          to: `whatsapp:${phone}`,
-        });
-        return { success: true };
-      }
+      const twilio = require('twilio');
+      const client = twilio(accountSid, authToken);
+      await client.messages.create({
+        body: `Your admin password reset OTP is: ${otp}. Valid for 5 minutes. Do not share this code.`,
+        from: fromWhatsApp,
+        to: `whatsapp:${phone}`,
+      });
+      return { success: true, channel: 'whatsapp' };
     } catch (err) {
       console.error('[TWILIO ERROR]', err.message);
     }
@@ -57,14 +52,52 @@ async function sendWhatsappOtp(phone, otp) {
 
   /* ── Fallback: log OTP to console (demo / no WhatsApp credentials) ── */
   console.log(`
-╔═════════════════════════════════════════╗
+╔══════════════════════════════════════════╗
 ║  WHATSAPP OTP (demo mode)              ║
 ║  To: ${phone}
 ║  OTP: ${otp}
 ║  Valid for: 5 minutes                  ║
 ╚════════════════════════════════════════╝
 `);
-  return { success: true, demo: true };
+  return { success: true, channel: 'whatsapp', demo: true };
+}
+
+/* ── Send OTP via Email (nodemailer / Gmail) ── */
+async function sendOtpEmail(to, otp) {
+  const mailer = getMailer();
+  if (!mailer) {
+    console.log(`
+╔══════════════════════════════════════════╗
+║  EMAIL OTP (demo mode - no SMTP creds)   ║
+║  To: ${to}
+║  OTP: ${otp}
+║  Valid for: 5 minutes                    ║
+╚════════════════════════════════════════╝
+`);
+    return { success: true, channel: 'email', demo: true };
+  }
+  try {
+    await mailer.sendMail({
+      from: `"Portfolio Admin" <${ENV.MAIL_USER}>`,
+      to,
+      subject: 'Admin Password Reset OTP',
+      html: `
+        <div style="font-family:sans-serif;background:#060b14;padding:32px;color:#e8f4ff">
+          <div style="max-width:560px;margin:0 auto;background:#0f1a2e;border-radius:14px;border:1px solid rgba(0,212,255,.2);padding:32px">
+            <h2 style="color:#00d4ff;margin-top:0">Admin Password Reset</h2>
+            <p>Your OTP code for admin password reset is:</p>
+            <div style="font-size:2rem;letter-spacing:8px;font-weight:bold;color:#fff;background:#0b1220;padding:16px;border-radius:8px;text-align:center;display:inline-block;margin:20px 0">${otp}</div>
+            <p style="font-size:.85rem;color:#4a6080">Valid for 5 minutes. Do not share this code.</p>
+          </div>
+        </div>
+      `,
+      text: `Your admin password reset OTP is: ${otp}. Valid for 5 minutes.`,
+    });
+    return { success: true, channel: 'email' };
+  } catch (err) {
+    console.error('[EMAIL ERROR]', err.message);
+    return { success: false, channel: 'email', error: err.message };
+  }
 }
 
 function getEffectivePasswordHash() {
@@ -130,7 +163,7 @@ function verifyToken(req, res) {
   res.json({ success: true, admin: req.admin });
 }
 
-/* ── Forgot password: send OTP to WhatsApp ── */
+/* ── Forgot password: send OTP via WhatsApp + Email ── */
 async function forgotPassword(req, res) {
   const { username } = req.body || {};
   if (!username || username !== adminCredentials.username) {
@@ -154,11 +187,26 @@ async function forgotPassword(req, res) {
     attempts: 0,
   });
 
-  const result = await sendWhatsappOtp(WHATSAPP_TO, otp);
+  /* Send via WhatsApp AND Email (parallel) */
+  const [whatsappResult, emailResult] = await Promise.allSettled([
+    sendWhatsappOtp(WHATSAPP_TO, otp),
+    sendOtpEmail(OTP_EMAIL_TO, otp),
+  ]);
+
+  const channels = [];
+  if (whatsappResult.status === 'fulfilled') channels.push(whatsappResult.value.channel || 'whatsapp');
+  if (emailResult.status === 'fulfilled') channels.push(emailResult.value.channel || 'email');
+
+  const sentVia = channels.length > 0 ? channels.join(' + ') : 'console';
+  const demo = (whatsappResult.status === 'fulfilled' && whatsappResult.value.demo) ||
+    (emailResult.status === 'fulfilled' && emailResult.value.demo);
+
   res.json({
     success: true,
-    message: 'OTP sent to your WhatsApp number.',
-    demo: result.demo,
+    message: `OTP sent via ${sentVia}.`,
+    sentVia,
+    demo,
+    channels,
   });
 }
 

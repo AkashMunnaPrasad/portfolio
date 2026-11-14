@@ -6,6 +6,7 @@ export default function AdminForgotPassword() {
   const [username, setUsername] = useState('admin');
   const [step, setStep] = useState<'request' | 'sent'>('request');
   const [error, setError] = useState('');
+  const [sentInfo, setSentInfo] = useState<{ channels?: string[]; sentVia?: string; demo?: boolean }>();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -16,6 +17,7 @@ export default function AdminForgotPassword() {
     try {
       const res = await api.post('/admin/forgot-password', { username });
       if (res.data.success) {
+        setSentInfo(res.data);
         setStep('sent');
       } else {
         setError(res.data.message || 'Failed to send OTP');
@@ -28,7 +30,6 @@ export default function AdminForgotPassword() {
   };
 
   const navigateToVerify = () => {
-    // Pass username as a query param or state for the verify step
     navigate(`/admin/verify-otp?username=${encodeURIComponent(username)}`);
   };
 
@@ -45,7 +46,7 @@ export default function AdminForgotPassword() {
             Forgot Password
           </h1>
           <p className="text-sm text-[var(--text-muted)] mt-2">
-            An OTP will be sent to your WhatsApp number to reset your admin password.
+            An OTP will be sent to your WhatsApp and email to reset your admin password.
           </p>
         </div>
 
@@ -69,14 +70,25 @@ export default function AdminForgotPassword() {
                 className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-4 py-3.5 text-sm text-[var(--text-primary)] outline-none transition-all focus:border-[var(--accent-cyan)]"
               />
             </div>
-            <div className="mb-6 bg-[var(--bg-secondary)] border border-[var(--border)] rounded p-4">
-              <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-2">
-                WhatsApp Number
-              </p>
-              <p className="text-sm font-medium text-[var(--text-primary)]">+91 8252336811</p>
-              <p className="text-[0.65rem] text-[var(--text-muted)] mt-1">
-                The OTP will be sent to this number via WhatsApp.
-              </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded p-4">
+                <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                  WhatsApp Number
+                </p>
+                <p className="text-sm font-medium text-[var(--text-primary)]">+91 8252336811</p>
+                <p className="text-[0.65rem] text-[var(--text-muted)] mt-1">
+                  OTP via WhatsApp
+                </p>
+              </div>
+              <div className="bg-[var(--bg-secondary)] border border-[var(--border)] rounded p-4">
+                <p className="text-xs text-[var(--text-muted)] uppercase tracking-wider mb-2">
+                  Email Address
+                </p>
+                <p className="text-sm font-medium text-[var(--text-primary)] truncate">deskamp33@gmail.com</p>
+                <p className="text-[0.65rem] text-[var(--text-muted)] mt-1">
+                  OTP via Email
+                </p>
+              </div>
             </div>
             <button
               type="submit"
@@ -107,8 +119,13 @@ export default function AdminForgotPassword() {
                 OTP Sent
               </h2>
               <p className="text-sm text-[var(--text-muted)] mt-2">
-                An OTP has been sent to your WhatsApp number. Enter it below to verify.
+                An OTP has been sent via {sentInfo?.sentVia || 'WhatsApp and Email'}. Check both to find the code.
               </p>
+              {sentInfo?.demo && (
+                <p className="text-[0.65rem] text-[var(--accent-cyan)] mt-3">
+                  Demo mode: OTP is shown in server console if delivery credentials are not configured.
+                </p>
+              )}
             </div>
             <button
               onClick={navigateToVerify}
