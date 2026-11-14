@@ -108,33 +108,6 @@ const contactLimiter = rateLimit({
   message: { success: false, message: 'Too many messages. Try again in an hour.' },
 });
 
-const forgotPasswordLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  limit: 3,
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: clientIp,
-  message: { success: false, message: 'Too many password reset requests. Try again in an hour.' },
-});
-
-const otpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  limit: 10,
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: clientIp,
-  message: { success: false, message: 'Too many OTP attempts. Try again later.' },
-});
-
-const resetPasswordLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  limit: 5,
-  standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: clientIp,
-  message: { success: false, message: 'Too many password reset attempts. Try again in an hour.' },
-});
-
 const newsletterLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 10,
@@ -158,9 +131,6 @@ app.use('/api/admin/login', authLimiter);
 app.use('/api/contact', contactLimiter);
 app.use('/api/newsletter', newsletterLimiter);
 app.use('/api/visitor/track', trackLimiter);
-app.use('/api/admin/forgot-password', forgotPasswordLimiter);
-app.use('/api/admin/verify-otp', otpLimiter);
-app.use('/api/admin/reset-password', resetPasswordLimiter);
 
 /* ── API routes ── */
 app.use('/api', routes);

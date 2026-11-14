@@ -24,9 +24,6 @@ const AdminEducation = lazy(() => import('./pages/admin/AdminEducation'));
 const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'));
 const AdminAnalytics = lazy(() => import('./pages/admin/AdminAnalytics'));
 const AdminSubscribers = lazy(() => import('./pages/admin/AdminSubscribers'));
-const AdminForgotPassword = lazy(() => import('./pages/admin/AdminForgotPassword'));
-const AdminVerifyOtp = lazy(() => import('./pages/admin/AdminVerifyOtp'));
-const AdminResetPassword = lazy(() => import('./pages/admin/AdminResetPassword'));
 
 function AuthGuard({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -59,9 +56,6 @@ export default function App() {
           </Route>
 
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/forgot-password" element={<AdminForgotPassword />} />
-          <Route path="/admin/verify-otp" element={<AdminVerifyOtp />} />
-          <Route path="/admin/reset-password" element={<AdminResetPassword />} />
 
           <Route
             path="/admin"
